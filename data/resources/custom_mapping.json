@@ -1,0 +1,7 @@
+{
+    "pam50_simplification": {
+        "G_D": "C6_G_D_L"
+
+        C6_G_D_L, C6_G_D_R, C6_G_I_L, C6_G_I_R, C6_G_V_L, C6_G_V_R, C6_W_CST_L, C6_W_CST_R, C6_W_FC_L, C6_W_FC_R, C6_W_FG_L, C6_W_FG_R, C6_W_SL_L, C6_W_SL_R, C7_G_D_L, C7_G_D_R, C7_G_I_L, C7_G_I_R, C7_G_V_L, C7_G_V_R, C7_W_CST_L, C7_W_CST_R, C7_W_FC_L, C7_W_FC_R, C7_W_FG_L, C7_W_FG_R, C7_W_SL_L, C7_W_SL_R, C8_G_D_L, C8_G_D_R, C8_G_I_L, C8_G_I_R, C8_G_V_L, C8_G_V_R, C8_W_CST_L, C8_W_CST_R, C8_W_FC_L, C8_W_FC_R, C8_W_FG_L, C8_W_FG_R, C8_W_SL_L, C8_W_SL_R, T1_G_D_L, T1_G_D_R, T1_G_I_L, T1_G_I_R, T1_G_V_L, T1_G_V_R, T1_W_CST_L, T1_W_CST_R, T1_W_FC_L, T1_W_FC_R, T1_W_FG_L, T1_W_FG_R, T1_W_SL_L, T1_W_SL_R
+    }
+}
