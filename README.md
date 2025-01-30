@@ -12,34 +12,37 @@ Code repository to reproduce experiments ran for the semester project on unsuper
 │   ├── __init__.py
 │   ├── clustering
 │   ├── ...
-├── glmm_gridsearch.py
-├── graph_vis.py
-├── main.ipynb
 ├── plots
-│   ├── cov_levels.png
-│   ├── cov.png
-│   ├── cov_simple.png
-│   ├── graph.html
-│   ├── latest_run_probabilties_C6_GM.png
-│   ├── latest_run_probabilties.png
-│   ├── mean_f1_scores.png
-│   ├── means_levels.png
-│   ├── means.png
-│   ├── means_simple.png
-│   └── std_f1_scores.png
-├── __pycache__
-│   ├── utils.cpython-310.pyc
-│   └── visualize_data.cpython-310.pyc
-├── README.md
+│   ├── ...
 ├── run_glmm.py
-├── run_kgraphs.py
+├── glmm_gridsearch.py
 ├── run_synthetic.py
-├── sdemo.mp4
-├── subgroups_match.py
-├── synthetic_data.ipynb
 ├── synthetic_gridsearch.py
-├── neural_network.py
+├── main.ipynb
+├── synthetic_data.ipynb
+├── sdemo.mp4
 ├── utils.py
+├── graph_vis.py
 └── visualize_data.py
-
 ```
+
+This repository contains full environment I used to create plots in report and presentation. The data is included in data/fmri, resources/ contains the activity paradigm and runs/ contains some outputs of scripts. 
+
+## Real Data Spinal Cord GLMM
+run_glmm.py and glmm_gridsearch.py allow you to run a GLMM on specified data path of a .npy matrix shape (n, d).
+Example command of run_glmm.py: 
+```
+run_glmm.py -p data/fmri/spinal_data.npy -k 6 -ag 44 -d 2 --full True
+```
+Where arguments are shortcuts but you can also write average_degree and delta.
+
+## Synthetic Data Generations
+
+run_synthetic.py allows you to run a sanity check on GLMM for specified data (see synthetic_data notebook for details) (also saves synthetic data means and cov plots).
+
+synthetic_gridsearch.py allows you to run a large data generation simulation to extract a feasability matrix and for the moment just save the results as a plot in plots/
+
+## Misc
+utils.py visualize_data.py are just importable modules and lib/ is the graph-learn library locally cloned from https://github.com/LTS4/graph-learning/
+
+
