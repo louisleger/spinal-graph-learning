@@ -1,0 +1,178 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 900px;
+                 height: 700px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "green", "group": "6", "id": 0, "label": "C6_G_D_L", "physics": false, "shape": "dot", "x": 250.0, "y": 450.0}, {"color": "green", "group": "6", "id": 1, "label": "C6_G_D_R", "physics": false, "shape": "dot", "x": 150.0, "y": 450.0}, {"color": "green", "group": "6", "id": 2, "label": "C6_G_I_L", "physics": false, "shape": "dot", "x": 250.0, "y": 400.0}, {"color": "green", "group": "6", "id": 3, "label": "C6_G_I_R", "physics": false, "shape": "dot", "x": 150.0, "y": 400.0}, {"color": "green", "group": "6", "id": 4, "label": "C6_G_V_L", "physics": false, "shape": "dot", "x": 300.0, "y": 350.0}, {"color": "green", "group": "6", "id": 5, "label": "C6_G_V_R", "physics": false, "shape": "dot", "x": 100.0, "y": 350.0}, {"color": "green", "group": "6", "id": 6, "label": "C6_W_CST_L", "physics": false, "shape": "dot", "x": 350.0, "y": 400.0}, {"color": "green", "group": "6", "id": 7, "label": "C6_W_CST_R", "physics": false, "shape": "dot", "x": 50.0, "y": 400.0}, {"color": "green", "group": "6", "id": 8, "label": "C6_W_FC_L", "physics": false, "shape": "dot", "x": 300.0, "y": 500.0}, {"color": "green", "group": "6", "id": 9, "label": "C6_W_FC_R", "physics": false, "shape": "dot", "x": 100.0, "y": 500.0}, {"color": "green", "group": "6", "id": 10, "label": "C6_W_FG_L", "physics": false, "shape": "dot", "x": 250.0, "y": 500.0}, {"color": "green", "group": "6", "id": 11, "label": "C6_W_FG_R", "physics": false, "shape": "dot", "x": 150.0, "y": 500.0}, {"color": "green", "group": "6", "id": 12, "label": "C6_W_SL_L", "physics": false, "shape": "dot", "x": 350.0, "y": 300.0}, {"color": "green", "group": "6", "id": 13, "label": "C6_W_SL_R", "physics": false, "shape": "dot", "x": 50.0, "y": 300.0}, {"color": "yellow", "group": "7", "id": 14, "label": "C7_G_D_L", "physics": false, "shape": "dot", "x": 250.0, "y": 700.0}, {"color": "yellow", "group": "7", "id": 15, "label": "C7_G_D_R", "physics": false, "shape": "dot", "x": 150.0, "y": 700.0}, {"color": "yellow", "group": "7", "id": 16, "label": "C7_G_I_L", "physics": false, "shape": "dot", "x": 250.0, "y": 650.0}, {"color": "yellow", "group": "7", "id": 17, "label": "C7_G_I_R", "physics": false, "shape": "dot", "x": 150.0, "y": 650.0}, {"color": "yellow", "group": "7", "id": 18, "label": "C7_G_V_L", "physics": false, "shape": "dot", "x": 300.0, "y": 600.0}, {"color": "yellow", "group": "7", "id": 19, "label": "C7_G_V_R", "physics": false, "shape": "dot", "x": 100.0, "y": 600.0}, {"color": "yellow", "group": "7", "id": 20, "label": "C7_W_CST_L", "physics": false, "shape": "dot", "x": 350.0, "y": 650.0}, {"color": "yellow", "group": "7", "id": 21, "label": "C7_W_CST_R", "physics": false, "shape": "dot", "x": 50.0, "y": 650.0}, {"color": "yellow", "group": "7", "id": 22, "label": "C7_W_FC_L", "physics": false, "shape": "dot", "x": 300.0, "y": 750.0}, {"color": "yellow", "group": "7", "id": 23, "label": "C7_W_FC_R", "physics": false, "shape": "dot", "x": 100.0, "y": 750.0}, {"color": "yellow", "group": "7", "id": 24, "label": "C7_W_FG_L", "physics": false, "shape": "dot", "x": 250.0, "y": 750.0}, {"color": "yellow", "group": "7", "id": 25, "label": "C7_W_FG_R", "physics": false, "shape": "dot", "x": 150.0, "y": 750.0}, {"color": "yellow", "group": "7", "id": 26, "label": "C7_W_SL_L", "physics": false, "shape": "dot", "x": 350.0, "y": 550.0}, {"color": "yellow", "group": "7", "id": 27, "label": "C7_W_SL_R", "physics": false, "shape": "dot", "x": 50.0, "y": 550.0}, {"color": "orange", "group": "8", "id": 28, "label": "C8_G_D_L", "physics": false, "shape": "dot", "x": 250.0, "y": 950.0}, {"color": "orange", "group": "8", "id": 29, "label": "C8_G_D_R", "physics": false, "shape": "dot", "x": 150.0, "y": 950.0}, {"color": "orange", "group": "8", "id": 30, "label": "C8_G_I_L", "physics": false, "shape": "dot", "x": 250.0, "y": 900.0}, {"color": "orange", "group": "8", "id": 31, "label": "C8_G_I_R", "physics": false, "shape": "dot", "x": 150.0, "y": 900.0}, {"color": "orange", "group": "8", "id": 32, "label": "C8_G_V_L", "physics": false, "shape": "dot", "x": 300.0, "y": 850.0}, {"color": "orange", "group": "8", "id": 33, "label": "C8_G_V_R", "physics": false, "shape": "dot", "x": 100.0, "y": 850.0}, {"color": "orange", "group": "8", "id": 34, "label": "C8_W_CST_L", "physics": false, "shape": "dot", "x": 350.0, "y": 900.0}, {"color": "orange", "group": "8", "id": 35, "label": "C8_W_CST_R", "physics": false, "shape": "dot", "x": 50.0, "y": 900.0}, {"color": "orange", "group": "8", "id": 36, "label": "C8_W_FC_L", "physics": false, "shape": "dot", "x": 300.0, "y": 1000.0}, {"color": "orange", "group": "8", "id": 37, "label": "C8_W_FC_R", "physics": false, "shape": "dot", "x": 100.0, "y": 1000.0}, {"color": "orange", "group": "8", "id": 38, "label": "C8_W_FG_L", "physics": false, "shape": "dot", "x": 250.0, "y": 1000.0}, {"color": "orange", "group": "8", "id": 39, "label": "C8_W_FG_R", "physics": false, "shape": "dot", "x": 150.0, "y": 1000.0}, {"color": "orange", "group": "8", "id": 40, "label": "C8_W_SL_L", "physics": false, "shape": "dot", "x": 350.0, "y": 800.0}, {"color": "orange", "group": "8", "id": 41, "label": "C8_W_SL_R", "physics": false, "shape": "dot", "x": 50.0, "y": 800.0}, {"color": "violet", "group": "1", "id": 42, "label": "T1_G_D_L", "physics": false, "shape": "dot", "x": 250.0, "y": 200.0}, {"color": "violet", "group": "1", "id": 43, "label": "T1_G_D_R", "physics": false, "shape": "dot", "x": 150.0, "y": 200.0}, {"color": "violet", "group": "1", "id": 44, "label": "T1_G_I_L", "physics": false, "shape": "dot", "x": 250.0, "y": 150.0}, {"color": "violet", "group": "1", "id": 45, "label": "T1_G_I_R", "physics": false, "shape": "dot", "x": 150.0, "y": 150.0}, {"color": "violet", "group": "1", "id": 46, "label": "T1_G_V_L", "physics": false, "shape": "dot", "x": 300.0, "y": 100.0}, {"color": "violet", "group": "1", "id": 47, "label": "T1_G_V_R", "physics": false, "shape": "dot", "x": 100.0, "y": 100.0}, {"color": "violet", "group": "1", "id": 48, "label": "T1_W_CST_L", "physics": false, "shape": "dot", "x": 350.0, "y": 150.0}, {"color": "violet", "group": "1", "id": 49, "label": "T1_W_CST_R", "physics": false, "shape": "dot", "x": 50.0, "y": 150.0}, {"color": "violet", "group": "1", "id": 50, "label": "T1_W_FC_L", "physics": false, "shape": "dot", "x": 300.0, "y": 250.0}, {"color": "violet", "group": "1", "id": 51, "label": "T1_W_FC_R", "physics": false, "shape": "dot", "x": 100.0, "y": 250.0}, {"color": "violet", "group": "1", "id": 52, "label": "T1_W_FG_L", "physics": false, "shape": "dot", "x": 250.0, "y": 250.0}, {"color": "violet", "group": "1", "id": 53, "label": "T1_W_FG_R", "physics": false, "shape": "dot", "x": 150.0, "y": 250.0}, {"color": "violet", "group": "1", "id": 54, "label": "T1_W_SL_L", "physics": false, "shape": "dot", "x": 350.0, "y": 50.0}, {"color": "violet", "group": "1", "id": 55, "label": "T1_W_SL_R", "physics": false, "shape": "dot", "x": 50.0, "y": 50.0}]);
+                  edges = new vis.DataSet([{"color": "red", "from": 0, "title": 0.25274881479022177, "to": 6, "value": 0.25274881479022177, "weight": 0.25274881479022177}, {"color": "red", "from": 0, "title": 0.21272188868510222, "to": 11, "value": 0.21272188868510222, "weight": 0.21272188868510222}, {"color": "red", "from": 1, "title": 0.2683937748228544, "to": 3, "value": 0.2683937748228544, "weight": 0.2683937748228544}, {"color": "red", "from": 1, "title": 0.21950483961504186, "to": 7, "value": 0.21950483961504186, "weight": 0.21950483961504186}, {"color": "red", "from": 1, "title": 0.41638824753025827, "to": 9, "value": 0.41638824753025827, "weight": 0.41638824753025827}, {"color": "red", "from": 1, "title": 0.24954984936511032, "to": 11, "value": 0.24954984936511032, "weight": 0.24954984936511032}, {"color": "red", "from": 1, "title": 0.22768131678377668, "to": 13, "value": 0.22768131678377668, "weight": 0.22768131678377668}, {"color": "red", "from": 2, "title": 0.2452787875601145, "to": 3, "value": 0.2452787875601145, "weight": 0.2452787875601145}, {"color": "red", "from": 2, "title": 0.3080230040811793, "to": 4, "value": 0.3080230040811793, "weight": 0.3080230040811793}, {"color": "red", "from": 3, "title": 0.28612012686638055, "to": 4, "value": 0.28612012686638055, "weight": 0.28612012686638055}, {"color": "red", "from": 3, "title": 0.37550036513979784, "to": 5, "value": 0.37550036513979784, "weight": 0.37550036513979784}, {"color": "red", "from": 3, "title": 0.201624086009026, "to": 8, "value": 0.201624086009026, "weight": 0.201624086009026}, {"color": "red", "from": 3, "title": 0.22942193562739605, "to": 13, "value": 0.22942193562739605, "weight": 0.22942193562739605}, {"color": "red", "from": 4, "title": 0.3089154437307442, "to": 5, "value": 0.3089154437307442, "weight": 0.3089154437307442}, {"color": "red", "from": 4, "title": 0.22655606532617917, "to": 13, "value": 0.22655606532617917, "weight": 0.22655606532617917}, {"color": "red", "from": 4, "title": 0.20233976076071383, "to": 18, "value": 0.20233976076071383, "weight": 0.20233976076071383}, {"color": "red", "from": 4, "title": 0.20552422554627933, "to": 32, "value": 0.20552422554627933, "weight": 0.20552422554627933}, {"color": "red", "from": 5, "title": 0.27615721092457957, "to": 7, "value": 0.27615721092457957, "weight": 0.27615721092457957}, {"color": "red", "from": 5, "title": 0.2361764836783645, "to": 9, "value": 0.2361764836783645, "weight": 0.2361764836783645}, {"color": "red", "from": 5, "title": 0.2754176140244869, "to": 13, "value": 0.2754176140244869, "weight": 0.2754176140244869}, {"color": "red", "from": 5, "title": 0.24681679840430765, "to": 18, "value": 0.24681679840430765, "weight": 0.24681679840430765}, {"color": "red", "from": 6, "title": 0.21119689569017078, "to": 7, "value": 0.21119689569017078, "weight": 0.21119689569017078}, {"color": "red", "from": 7, "title": 0.21780837808365158, "to": 11, "value": 0.21780837808365158, "weight": 0.21780837808365158}, {"color": "red", "from": 7, "title": 0.20705409082087725, "to": 18, "value": 0.20705409082087725, "weight": 0.20705409082087725}, {"color": "red", "from": 8, "title": 0.265505361337019, "to": 9, "value": 0.265505361337019, "weight": 0.265505361337019}, {"color": "red", "from": 8, "title": 0.20935438995709413, "to": 11, "value": 0.20935438995709413, "weight": 0.20935438995709413}, {"color": "red", "from": 9, "title": 0.35546301534197505, "to": 11, "value": 0.35546301534197505, "weight": 0.35546301534197505}, {"color": "red", "from": 9, "title": 0.2644879554965174, "to": 13, "value": 0.2644879554965174, "weight": 0.2644879554965174}, {"color": "red", "from": 9, "title": 0.28977355694903634, "to": 20, "value": 0.28977355694903634, "weight": 0.28977355694903634}, {"color": "red", "from": 9, "title": 0.20905815690555285, "to": 26, "value": 0.20905815690555285, "weight": 0.20905815690555285}, {"color": "red", "from": 10, "title": 0.20103104761775645, "to": 13, "value": 0.20103104761775645, "weight": 0.20103104761775645}, {"color": "red", "from": 12, "title": 0.2251898615167194, "to": 20, "value": 0.2251898615167194, "weight": 0.2251898615167194}, {"color": "red", "from": 13, "title": 0.2495175665405571, "to": 25, "value": 0.2495175665405571, "weight": 0.2495175665405571}, {"color": "red", "from": 14, "title": 0.40891065401604726, "to": 22, "value": 0.40891065401604726, "weight": 0.40891065401604726}, {"color": "red", "from": 14, "title": 0.23053220663019872, "to": 42, "value": 0.23053220663019872, "weight": 0.23053220663019872}, {"color": "red", "from": 15, "title": 0.32990202681502756, "to": 23, "value": 0.32990202681502756, "weight": 0.32990202681502756}, {"color": "red", "from": 16, "title": 0.23614011879262953, "to": 18, "value": 0.23614011879262953, "weight": 0.23614011879262953}, {"color": "red", "from": 16, "title": 0.23813312673831435, "to": 26, "value": 0.23813312673831435, "weight": 0.23813312673831435}, {"color": "red", "from": 16, "title": 0.24205175706985757, "to": 30, "value": 0.24205175706985757, "weight": 0.24205175706985757}, {"color": "red", "from": 16, "title": 0.26608766188295113, "to": 47, "value": 0.26608766188295113, "weight": 0.26608766188295113}, {"color": "red", "from": 16, "title": 0.2275216103734405, "to": 48, "value": 0.2275216103734405, "weight": 0.2275216103734405}, {"color": "red", "from": 16, "title": 0.21781918811351325, "to": 52, "value": 0.21781918811351325, "weight": 0.21781918811351325}, {"color": "red", "from": 17, "title": 0.31191232539484326, "to": 19, "value": 0.31191232539484326, "weight": 0.31191232539484326}, {"color": "red", "from": 17, "title": 0.21416350163134662, "to": 24, "value": 0.21416350163134662, "weight": 0.21416350163134662}, {"color": "red", "from": 17, "title": 0.23177738559485828, "to": 47, "value": 0.23177738559485828, "weight": 0.23177738559485828}, {"color": "red", "from": 18, "title": 0.26156691642437924, "to": 19, "value": 0.26156691642437924, "weight": 0.26156691642437924}, {"color": "red", "from": 18, "title": 0.27067827389641796, "to": 26, "value": 0.27067827389641796, "weight": 0.27067827389641796}, {"color": "red", "from": 18, "title": 0.2099213878770198, "to": 29, "value": 0.2099213878770198, "weight": 0.2099213878770198}, {"color": "red", "from": 18, "title": 0.20303540164499811, "to": 35, "value": 0.20303540164499811, "weight": 0.20303540164499811}, {"color": "red", "from": 18, "title": 0.2496160736389559, "to": 45, "value": 0.2496160736389559, "weight": 0.2496160736389559}, {"color": "red", "from": 18, "title": 0.2714621336976389, "to": 48, "value": 0.2714621336976389, "weight": 0.2714621336976389}, {"color": "red", "from": 18, "title": 0.22564383465025015, "to": 55, "value": 0.22564383465025015, "weight": 0.22564383465025015}, {"color": "red", "from": 19, "title": 0.22979078470452272, "to": 21, "value": 0.22979078470452272, "weight": 0.22979078470452272}, {"color": "red", "from": 19, "title": 0.2388691159243071, "to": 24, "value": 0.2388691159243071, "weight": 0.2388691159243071}, {"color": "red", "from": 20, "title": 0.2377848584205787, "to": 21, "value": 0.2377848584205787, "weight": 0.2377848584205787}, {"color": "red", "from": 20, "title": 0.3252641263157979, "to": 22, "value": 0.3252641263157979, "weight": 0.3252641263157979}, {"color": "red", "from": 20, "title": 0.2899511366155176, "to": 24, "value": 0.2899511366155176, "weight": 0.2899511366155176}, {"color": "red", "from": 20, "title": 0.21524952915825096, "to": 28, "value": 0.21524952915825096, "weight": 0.21524952915825096}, {"color": "red", "from": 21, "title": 0.26209457442049683, "to": 22, "value": 0.26209457442049683, "weight": 0.26209457442049683}, {"color": "red", "from": 21, "title": 0.3034030240140381, "to": 24, "value": 0.3034030240140381, "weight": 0.3034030240140381}, {"color": "red", "from": 22, "title": 0.31819893937385263, "to": 24, "value": 0.31819893937385263, "weight": 0.31819893937385263}, {"color": "red", "from": 22, "title": 0.2168936439992278, "to": 40, "value": 0.2168936439992278, "weight": 0.2168936439992278}, {"color": "red", "from": 23, "title": 0.3262609107327402, "to": 25, "value": 0.3262609107327402, "weight": 0.3262609107327402}, {"color": "red", "from": 23, "title": 0.21329795228313572, "to": 31, "value": 0.21329795228313572, "weight": 0.21329795228313572}, {"color": "red", "from": 23, "title": 0.23094121621411984, "to": 33, "value": 0.23094121621411984, "weight": 0.23094121621411984}, {"color": "red", "from": 24, "title": 0.20942149471430233, "to": 25, "value": 0.20942149471430233, "weight": 0.20942149471430233}, {"color": "red", "from": 24, "title": 0.21873639908186965, "to": 38, "value": 0.21873639908186965, "weight": 0.21873639908186965}, {"color": "red", "from": 25, "title": 0.20030927758732467, "to": 31, "value": 0.20030927758732467, "weight": 0.20030927758732467}, {"color": "red", "from": 25, "title": 0.2229712177292179, "to": 33, "value": 0.2229712177292179, "weight": 0.2229712177292179}, {"color": "red", "from": 28, "title": 0.27146300654523975, "to": 34, "value": 0.27146300654523975, "weight": 0.27146300654523975}, {"color": "red", "from": 28, "title": 0.3434534542282199, "to": 36, "value": 0.3434534542282199, "weight": 0.3434534542282199}, {"color": "red", "from": 28, "title": 0.2545301099388585, "to": 42, "value": 0.2545301099388585, "weight": 0.2545301099388585}, {"color": "red", "from": 28, "title": 0.2812570309193095, "to": 45, "value": 0.2812570309193095, "weight": 0.2812570309193095}, {"color": "red", "from": 30, "title": 0.32847332085817516, "to": 32, "value": 0.32847332085817516, "weight": 0.32847332085817516}, {"color": "red", "from": 30, "title": 0.217160253382726, "to": 33, "value": 0.217160253382726, "weight": 0.217160253382726}, {"color": "red", "from": 30, "title": 0.25401778642087813, "to": 36, "value": 0.25401778642087813, "weight": 0.25401778642087813}, {"color": "red", "from": 31, "title": 0.24203218940840693, "to": 33, "value": 0.24203218940840693, "weight": 0.24203218940840693}, {"color": "red", "from": 31, "title": 0.22434530091918645, "to": 39, "value": 0.22434530091918645, "weight": 0.22434530091918645}, {"color": "red", "from": 32, "title": 0.21516504741594736, "to": 40, "value": 0.21516504741594736, "weight": 0.21516504741594736}, {"color": "red", "from": 32, "title": 0.2456100257523161, "to": 46, "value": 0.2456100257523161, "weight": 0.2456100257523161}, {"color": "red", "from": 33, "title": 0.2593157713255215, "to": 45, "value": 0.2593157713255215, "weight": 0.2593157713255215}, {"color": "red", "from": 33, "title": 0.29524409477129415, "to": 54, "value": 0.29524409477129415, "weight": 0.29524409477129415}, {"color": "red", "from": 34, "title": 0.2043207431117939, "to": 35, "value": 0.2043207431117939, "weight": 0.2043207431117939}, {"color": "red", "from": 35, "title": 0.22958636410225655, "to": 43, "value": 0.22958636410225655, "weight": 0.22958636410225655}, {"color": "red", "from": 35, "title": 0.20609687395406748, "to": 45, "value": 0.20609687395406748, "weight": 0.20609687395406748}, {"color": "red", "from": 36, "title": 0.24345825571587287, "to": 38, "value": 0.24345825571587287, "weight": 0.24345825571587287}, {"color": "red", "from": 37, "title": 0.26132872381526434, "to": 39, "value": 0.26132872381526434, "weight": 0.26132872381526434}, {"color": "red", "from": 38, "title": 0.30963889186144916, "to": 39, "value": 0.30963889186144916, "weight": 0.30963889186144916}, {"color": "red", "from": 39, "title": 0.20558232514439545, "to": 44, "value": 0.20558232514439545, "weight": 0.20558232514439545}, {"color": "red", "from": 42, "title": 0.21248137200542527, "to": 48, "value": 0.21248137200542527, "weight": 0.21248137200542527}, {"color": "red", "from": 42, "title": 0.34871665359708637, "to": 50, "value": 0.34871665359708637, "weight": 0.34871665359708637}, {"color": "red", "from": 43, "title": 0.29510464326287, "to": 45, "value": 0.29510464326287, "weight": 0.29510464326287}, {"color": "red", "from": 43, "title": 0.20258011513284085, "to": 53, "value": 0.20258011513284085, "weight": 0.20258011513284085}, {"color": "red", "from": 44, "title": 0.20259412502353785, "to": 45, "value": 0.20259412502353785, "weight": 0.20259412502353785}, {"color": "red", "from": 44, "title": 0.22947902520543903, "to": 46, "value": 0.22947902520543903, "weight": 0.22947902520543903}, {"color": "red", "from": 44, "title": 0.2218851587972034, "to": 50, "value": 0.2218851587972034, "weight": 0.2218851587972034}, {"color": "red", "from": 45, "title": 0.20495288975132142, "to": 47, "value": 0.20495288975132142, "weight": 0.20495288975132142}, {"color": "red", "from": 45, "title": 0.21512369852991578, "to": 48, "value": 0.21512369852991578, "weight": 0.21512369852991578}, {"color": "red", "from": 45, "title": 0.2162685110018168, "to": 54, "value": 0.2162685110018168, "weight": 0.2162685110018168}, {"color": "red", "from": 48, "title": 0.28425146077276764, "to": 52, "value": 0.28425146077276764, "weight": 0.28425146077276764}, {"color": "red", "from": 50, "title": 0.35932684965347683, "to": 52, "value": 0.35932684965347683, "weight": 0.35932684965347683}, {"color": "red", "from": 52, "title": 0.4146079778197128, "to": 53, "value": 0.4146079778197128, "weight": 0.4146079778197128}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "edges"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0,
+            "damping": 0.09,
+            "gravitationalConstant": 0,
+            "springConstant": 0,
+            "springLength": 0
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
